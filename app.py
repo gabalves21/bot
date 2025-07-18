@@ -1,6 +1,6 @@
 from flask import Flask, request, Response
 from twilio.twiml.messaging_response import MessagingResponse
-import os
+import os # Importa o módulo os para acessar variáveis de ambiente
 
 app = Flask(__name__)
 
@@ -15,8 +15,8 @@ def whatsapp_bot():
     """
     Função principal que lida com as mensagens recebidas do WhatsApp via Twilio.
     """
-    # Obtém o corpo da mensagem recebida e o número de origem
-    incoming_msg = request.values.get('Body', '').lower()
+    # Obtém o corpo da mensagem recebida, remove espaços em branco e converte para minúsculas
+    incoming_msg = request.values.get('Body', '').strip().lower()
     from_number = request.values.get('From', '') # Formato: 'whatsapp:+5519971117864'
 
     # Cria um objeto MessagingResponse para construir a resposta TwiML
@@ -106,5 +106,10 @@ def whatsapp_bot():
     return Response(str(resp), mimetype="application/xml")
 
 if __name__ == "__main__":
+    # Obtém a porta do ambiente (útil para o Render) ou usa 5000 como padrão
     port = int(os.environ.get("PORT", 5000))
+    # Executa o aplicativo Flask.
+    # Em um ambiente de produção (como o Render), um servidor WSGI (ex: Gunicorn)
+    # seria usado para rodar o aplicativo de forma mais robusta.
+    # Para testes locais, você pode rodar este arquivo diretamente.
     app.run(host="0.0.0.0", port=port)
