@@ -6,31 +6,54 @@ app = Flask(__name__)
 
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp():
-    incoming_msg = request.values.get("Body", "").strip().lower()
+    incoming_msg = request.values.get("Body", "").lower()
+    user_name = request.values.get("ProfileName", "tudo bem")  # nome da pessoa no WhatsApp
     resp = MessagingResponse()
-    msg = resp.message()
 
-    if incoming_msg in ["oi", "menu", "início"]:
+    if incoming_msg in ["oi", "olá", "início"]:
+        msg = resp.message(f"Oi, {user_name}! Tudo bem? 😊")
+        return str(resp)
+
+    elif incoming_msg == "1":
+        msg = resp.message()
         msg.body(
-            "👋 Olá! Escolha uma opção digitando o número:\n"
-            "1️⃣ Ver produtos\n"
-            "2️⃣ Falar com atendente\n"
-            "3️⃣ Sair"
+            "Aqui é a Julia! Sua inscrição na Juntai foi aprovada 🎉\n\n"
+            "Agora é oficial: você está prestes a viver uma noite especial, com pessoas incríveis, boa comida e conexões autênticas 🍽️✨\n\n"
+            "Tudo acontece em um ambiente cuidadosamente pensado, com pessoas que combinam com você."
         )
-    elif incoming_msg in ["1", "produtos"]:
+        return str(resp)
+
+    elif incoming_msg == "2":
+        msg = resp.message()
         msg.body(
-            "🍕 Temos os seguintes produtos:\n"
-            "1. Pizza\n2. Sushi\n3. Hamburguer\n\n"
-            "Digite o número do produto para saber mais."
+            "Nossos jantares acontecem todas as quartas, com grupos de 5 desconhecidos que têm tudo pra se dar bem.\n\n"
+            "A mágica acontece com a nossa inteligência artificial, que cruza os interesses de cada pessoa e monta mesas com sintonia real 🍷✨\n\n"
+            "Ah, e o restaurante? É um lugar surpresa. A gente só revela o endereço um dia antes do jantar.\n\n"
+            "Você gostaria de participar?"
         )
-    elif incoming_msg in ["2", "atendente"]:
-        msg.body("💬 Um atendente entrará em contato com você em instantes.")
-    elif incoming_msg in ["3", "sair"]:
-        msg.body("👋 Obrigado por conversar. Até mais!")
+        msg_buttons = msg.button_response()
+        msg_buttons.button("Sim, reservar mesa!", "reservar")
+        return str(resp)
+
+    elif incoming_msg == "reservar":
+        msg = resp.message()
+        msg.body(
+            "Pra garantir essa experiência, a gente trabalha com vagas limitadas: são só 60 por mês por cidade.\n\n"
+            "Pra participar, é só reservar sua mesa. Mas não deixa pra depois, porque elas podem acabar a qualquer momento ⏳🍽️\n\n"
+            "Temos 3 tipos de plano:\n"
+            "🔸 Plano Único: 1 mês, sem renovação automática\n"
+            "🔸 Plano Mensal: renovação mensal\n"
+            "🔸 Plano Trimestral: mais econômico\n\n"
+            "Escolha o que faz sentido e garanta seu lugar 🧡"
+        )
+        msg_buttons = msg.button_response()
+        msg_buttons.button("Reservar mesa! 🧡", "https://juntai.app/")
+        return str(resp)
+
     else:
-        msg.body("🤔 Desculpe, não entendi. Digite *menu* para ver as opções.")
+        msg = resp.message("Digite *oi* para começar ou *1* para continuar.")
+        return str(resp)
 
-    return str(resp)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
