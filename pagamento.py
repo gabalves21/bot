@@ -18,7 +18,7 @@ def pagamento():
 
         # Consulta o pagamento na API do Mercado Pago
         headers = {
-            "Authorization": f"Bearer {os.environ['MP_ACCESS_TOKEN']}"
+            "Authorization": f"Bearer {os.environ['APP_USR-4158288324839227-071911-4c426f76c6789bbac5e8c4b200117930-506030843']}"
         }
 
         response = requests.get(
@@ -38,9 +38,9 @@ def pagamento():
 
             if telefone:
                 # Envia mensagem no WhatsApp via Twilio
-                twilio_sid = os.environ["TWILIO_SID"]
-                twilio_token = os.environ["TWILIO_AUTH_TOKEN"]
-                twilio_number = os.environ["TWILIO_WHATSAPP_NUMBER"]
+                twilio_sid = os.environ["AC5015546b9a9404cd372615e038210b88"]
+                twilio_token = os.environ["4d7378f0db65b7f25c3e0666681276d1"]
+                twilio_number = os.environ["+12028398609"]
 
                 client = Client(twilio_sid, twilio_token)
 
