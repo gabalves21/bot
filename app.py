@@ -5,8 +5,8 @@ import os
 app = Flask(__name__)
 
 # Dados do Twilio (definir no Render > Environment)
-account_sid = os.environ.get("AC5015546b9a9404cd372615e038210b88")
-auth_token = os.environ.get("4d7378f0db65b7f25c3e0666681276d1")
+account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
+auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
 whatsapp_number = "whatsapp:+12028398609"  # Sandbox ou número oficial do Twilio
 client = Client(account_sid, auth_token)
 
